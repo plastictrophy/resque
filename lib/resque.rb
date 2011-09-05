@@ -146,6 +146,11 @@ module Resque
   # Returns a queue name and a Ruby object, or nil if `timeout` seconds
   # passed with all queues remaining empty.
   def bpop(queues, timeout)
+    if queues.empty?
+      sleep 1
+      return nil
+    end
+
     args = queues.map { |q| "queue:#{q}" }
     args << timeout
 
